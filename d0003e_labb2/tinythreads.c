@@ -93,7 +93,8 @@ void spawn(void (* function)(int), int arg) {
 }
 
 void yield(void) {
-
+    enqueue(current,&readyQ);
+    dispatch(dequeue(&readyQ));
 }
 
 void lock(mutex *m) {
