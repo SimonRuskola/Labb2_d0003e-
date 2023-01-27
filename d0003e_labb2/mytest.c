@@ -96,6 +96,7 @@ void writeChar(char ch, int pos) {
 }
 
 bool is_prime(long i) {
+	if(i==1){return false;}
 	for(int j=2; j<i;j++){
 		if(i%j==0){
 			return false;
@@ -123,6 +124,7 @@ void computePrimes(int pos) {
         }
     }
 }
+
 
 int main() {
     LCD_Init();

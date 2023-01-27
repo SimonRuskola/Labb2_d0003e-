@@ -36,7 +36,21 @@ static void initialize(void) {
     threads[NTHREADS-1].next = NULL;
 
 
+    // initialize button
+    PORTB = PORTB | (1 << 7);
+	// enable interupts for joystick down
+	EIMSK = EIMSK | (1 << PCINT15);
+	PCMSK1 = PCMSK1 | (1 << PCINT15);
+
+
     initialized = 1;
+}
+
+ISR(PCINT1_vect) {
+	if(PORTB>>7 == 0){
+		yield();
+	}	
+    
 }
 
 static void enqueue(thread p, thread *queue) {
@@ -93,8 +107,9 @@ void spawn(void (* function)(int), int arg) {
 }
 
 void yield(void) {
-    enqueue(current,&readyQ);
-    dispatch(dequeue(&readyQ));
+	enqueue(current,&readyQ);
+	dispatch(dequeue(&readyQ));
+	
 }
 
 void lock(mutex *m) {
