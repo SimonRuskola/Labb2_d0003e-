@@ -46,12 +46,12 @@ static void initialize(void) {
     initialized = 1;
 }
 
-ISR(PCINT1_vect) {
+/*ISR(PCINT1_vect) {
 	if(PORTB>>7 == 0){ // probalby not correct
 		yield();
 	}	
     
-}
+}*/
 
 static void enqueue(thread p, thread *queue) {
     p->next = NULL;
@@ -107,8 +107,10 @@ void spawn(void (* function)(int), int arg) {
 }
 
 void yield(void) {
+	DISABLE();
 	enqueue(current,&readyQ);
 	dispatch(dequeue(&readyQ));
+	ENABLE();
 	
 }
 
