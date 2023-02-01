@@ -38,7 +38,7 @@ static void initialize(void) {
 
     // initialize button
     PORTB = PORTB | (1 << 7);
-	// enable interupts for joystick down
+	// enable interupts for joystick
 	EIMSK = EIMSK | (1 << PCINT15);
 	PCMSK1 = PCMSK1 | (1 << PCINT15);
 
@@ -47,7 +47,7 @@ static void initialize(void) {
 }
 
 ISR(PCINT1_vect) {
-	if(PORTB>>7 == 0){
+	if(PORTB>>7 == 0){ // probalby not correct
 		yield();
 	}	
     
