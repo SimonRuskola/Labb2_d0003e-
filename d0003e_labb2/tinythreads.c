@@ -29,6 +29,7 @@ thread current = &initp;
 
 int initialized = 0;
 
+
 static void initialize(void) {
     int i;
     for (i=0; i<NTHREADS-1; i++)
@@ -43,15 +44,35 @@ static void initialize(void) {
 	PCMSK1 = PCMSK1 | (1 << PCINT15);
 
 
+
+	
+    CLKPR  |= (1 << CLKPS0);  //8 MHz system clock
+
+    TCCR1B |= (1 << WGM12); // Sets the timer to CTC mode
+
+	TCCR1B |= (1<<CS12) | (1<<CS10); //prescaling factor of 1024
+    
+    TIMSK1 |=  (1 << OCIE1A); //enabe interupts for timer
+
+
+    OCR1A = 391; // (8000000 / (1024) * 50 *10^(-3)  
+
+    TCNT1 = 0; // set timer to 0
+
+
     initialized = 1;
 }
 
-/*ISR(PCINT1_vect) {
-	if(PORTB>>7 == 0){ // probalby not correct
+ISR(PCINT1_vect) {
+	if(PINB>>7 == 0){   
 		yield();
 	}	
     
-}*/
+}
+
+ISR(TIMER1_COMPA_vect){
+    yield();
+}
 
 static void enqueue(thread p, thread *queue) {
     p->next = NULL;
@@ -115,9 +136,19 @@ void yield(void) {
 }
 
 void lock(mutex *m) {
-
+    if(m->locked == 0){
+        m->locked = 1;
+    } else{
+        enqueue(current,&(m->waitQ));
+        dispatch(dequeue(&readyQ));
+    }
 }
-
 void unlock(mutex *m) {
+    if(m->waitQ){
+        enqueue(current,&readyQ);
+        dispatch(dequeue(&(m->waitQ)));
+    }else{
+        m->locked = 0; 
+    }
 
 }

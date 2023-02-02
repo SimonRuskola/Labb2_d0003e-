@@ -26,7 +26,11 @@
 #define SevenValue  0x0111 //0001000100010000 0x0 0x1 0x1 0x1 = 0x0111
 #define EightValue  0x1f51 //0001010111110001 0x1 0xf 0x5 0x1 = 0x1f51
 #define NineValue   0x0b51 //0001010110110000 0x0 0xb 0x5 0x1 = 0x0b51 
-#define ValueArray (int[]){ZeroValue,OneValue,TwoValue,ThreeValue,FourValue,FiveValue,SixValue,SevenValue,EightValue,NineValue,BlankValue}
+//#define ValueArray (int[]){ZeroValue,OneValue,TwoValue,ThreeValue,FourValue,FiveValue,SixValue,SevenValue,EightValue,NineValue,BlankValue}	
+int ValueArray[] = {ZeroValue,OneValue,TwoValue,ThreeValue,FourValue,FiveValue,SixValue,SevenValue,EightValue,NineValue,BlankValue};
+int pp;
+
+mutex m = MUTEX_INIT;
 
 void LCD_Init(void) {
 	CLKPR = (1 << CLKPCE); 
@@ -45,6 +49,7 @@ void LCD_Init(void) {
 }
 
 void writeChar(char ch, int pos) {
+	
 
 	volatile int i = 0;
 	if (pos < 0 || pos > 5) {
@@ -108,8 +113,12 @@ bool is_prime(long i) {
 
 
 void printAt(long num, int pos) {
-    int pp = pos;
+    pp = pos;
     writeChar( (num % 100) / 10 + '0', pp);
+	for(volatile int i=0; i<1000; i++){
+		
+	}
+	
     pp++;
     writeChar( num % 10 + '0', pp);
 }
@@ -119,8 +128,10 @@ void computePrimes(int pos) {
 
     for(n = 1; ; n++) {
         if (is_prime(n)) {
+			lock(&m);
             printAt(n, pos);
-            yield();
+			unlock(&m);
+            //yield();	
         }
     }
 }
