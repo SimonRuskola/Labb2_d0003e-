@@ -9,7 +9,7 @@
 
 struct thread_block;
 typedef struct thread_block *thread;
-void spawn(void (*code)(int), int arg);
+void spawn(void (*code  )(int), int arg);
 void yield(void);
 
 struct mutex_block {

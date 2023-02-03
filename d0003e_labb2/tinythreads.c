@@ -29,6 +29,7 @@ thread current = &initp;
 
 int initialized = 0;
 
+
 static void initialize(void) {
     int i;
     for (i=0; i<NTHREADS-1; i++)
@@ -38,19 +39,39 @@ static void initialize(void) {
 
     // initialize button
     PORTB = PORTB | (1 << 7);
-	// enable interupts for joystick down
+	// enable interupts for joystick
 	EIMSK = EIMSK | (1 << PCINT15);
 	PCMSK1 = PCMSK1 | (1 << PCINT15);
+
+
+
+	
+    CLKPR  |= (1 << CLKPS0);  //8 MHz system clock
+
+    TCCR1B |= (1 << WGM12); // Sets the timer to CTC mode
+
+	TCCR1B |= (1<<CS12) | (1<<CS10); //prescaling factor of 1024
+    
+    TIMSK1 |=  (1 << OCIE1A); //enabe interupts for timer
+
+
+    OCR1A = 139; // (8000000 / (1024) * 50 *10^(-3)  
+
+    TCNT1 = 0; // set timer to 0
 
 
     initialized = 1;
 }
 
 ISR(PCINT1_vect) {
-	if(PORTB>>7 == 0){
+	if(PINB>>7 == 0){   
 		yield();
 	}	
     
+}
+
+ISR(TIMER1_COMPA_vect){
+    yield();
 }
 
 static void enqueue(thread p, thread *queue) {
@@ -107,15 +128,31 @@ void spawn(void (* function)(int), int arg) {
 }
 
 void yield(void) {
+	DISABLE();
 	enqueue(current,&readyQ);
 	dispatch(dequeue(&readyQ));
+	ENABLE();
 	
 }
 
 void lock(mutex *m) {
-
+	DISABLE();
+    if(m->locked == 0){
+        m->locked = 1;
+    } else{
+        enqueue(current,&(m->waitQ));
+        dispatch(dequeue(&readyQ));
+    }
+	ENABLE();
 }
-
 void unlock(mutex *m) {
+	DISABLE();
+    if(m->waitQ){
+        enqueue(current,&readyQ);
+        dispatch(dequeue(&(m->waitQ)));
+    }else{
+        m->locked = 0; 
+    }
+	ENABLE();
 
 }
