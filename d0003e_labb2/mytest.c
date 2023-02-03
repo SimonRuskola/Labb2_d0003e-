@@ -128,9 +128,9 @@ void computePrimes(int pos) {
 
     for(n = 1; ; n++) {
         if (is_prime(n)) {
-			//lock(&m);
+			lock(&m);
             printAt(n, pos);
-			//unlock(&m);
+			unlock(&m);
             //yield();	
         }
     }

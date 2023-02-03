@@ -55,7 +55,7 @@ static void initialize(void) {
     TIMSK1 |=  (1 << OCIE1A); //enabe interupts for timer
 
 
-    OCR1A = 139; // (8000000 / (1024) * 50 *10^(-3)  
+    OCR1A = 391; // (8000000 / (1024) * 50 *10^(-3)  
 
     TCNT1 = 0; // set timer to 0
 
