@@ -28,8 +28,6 @@ Discarded input sections
  .text          0x00000000        0x0 mytest.o
  .data          0x00000000        0x0 mytest.o
  .bss           0x00000000        0x0 mytest.o
- .text.computePrimes2
-                0x00000000       0x14 mytest.o
  .text          0x00000000        0x0 tinythreads.o
  .data          0x00000000        0x0 tinythreads.o
  .bss           0x00000000        0x0 tinythreads.o
@@ -509,21 +507,21 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0xa0
+.debug_aranges  0x00000000       0x98
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x50 mytest.o
+                0x00000000       0x48 mytest.o
  .debug_aranges
-                0x00000050       0x50 tinythreads.o
+                0x00000048       0x50 tinythreads.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xfc7
+.debug_info     0x00000000      0xf67
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x7b6 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega169p/avr5/crtatmega169p.o
- .debug_info    0x000007b6      0x2f8 mytest.o
- .debug_info    0x00000aae      0x519 tinythreads.o
+ .debug_info    0x000007b6      0x298 mytest.o
+ .debug_info    0x00000a4e      0x519 tinythreads.o
 
 .debug_abbrev   0x00000000      0xaba
  *(.debug_abbrev)
@@ -531,29 +529,29 @@ END GROUP
  .debug_abbrev  0x0000074b      0x14c mytest.o
  .debug_abbrev  0x00000897      0x223 tinythreads.o
 
-.debug_line     0x00000000      0x609
+.debug_line     0x00000000      0x5de
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x122 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega169p/avr5/crtatmega169p.o
- .debug_line    0x00000122      0x2af mytest.o
- .debug_line    0x000003d1      0x238 tinythreads.o
+ .debug_line    0x00000122      0x284 mytest.o
+ .debug_line    0x000003a6      0x238 tinythreads.o
 
-.debug_frame    0x00000000      0x1d8
+.debug_frame    0x00000000      0x1c8
  *(.debug_frame)
- .debug_frame   0x00000000       0xec mytest.o
- .debug_frame   0x000000ec       0xec tinythreads.o
+ .debug_frame   0x00000000       0xdc mytest.o
+ .debug_frame   0x000000dc       0xec tinythreads.o
 
-.debug_str      0x00000000      0x52f
+.debug_str      0x00000000      0x563
  *(.debug_str)
  .debug_str     0x00000000      0x2b3 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega169p/avr5/crtatmega169p.o
- .debug_str     0x000002b3      0x18f mytest.o
-                                0x1c8 (size before relaxing)
- .debug_str     0x00000442       0xed tinythreads.o
+ .debug_str     0x000002b3      0x180 mytest.o
+                                0x1b9 (size before relaxing)
+ .debug_str     0x00000433      0x130 tinythreads.o
                                 0x26e (size before relaxing)
 
-.debug_loc      0x00000000      0x673
+.debug_loc      0x00000000      0x637
  *(.debug_loc)
- .debug_loc     0x00000000      0x366 mytest.o
- .debug_loc     0x00000366      0x30d tinythreads.o
+ .debug_loc     0x00000000      0x32a mytest.o
+ .debug_loc     0x0000032a      0x30d tinythreads.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -573,10 +571,10 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0xa0
+.debug_ranges   0x00000000       0x98
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x60 mytest.o
- .debug_ranges  0x00000060       0x40 tinythreads.o
+ .debug_ranges  0x00000000       0x58 mytest.o
+ .debug_ranges  0x00000058       0x40 tinythreads.o
 
 .debug_macro
  *(.debug_macro)
