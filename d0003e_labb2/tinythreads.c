@@ -55,7 +55,7 @@ static void initialize(void) {
     TIMSK1 |=  (1 << OCIE1A); //enabe interupts for timer
 
 
-    OCR1A = 391; // (8000000 / (1024) * 50 *10^(-3)  
+    OCR1A = 139; // (8000000 / (1024) * 50 *10^(-3)  
 
     TCNT1 = 0; // set timer to 0
 
@@ -136,19 +136,23 @@ void yield(void) {
 }
 
 void lock(mutex *m) {
+	DISABLE();
     if(m->locked == 0){
         m->locked = 1;
     } else{
         enqueue(current,&(m->waitQ));
         dispatch(dequeue(&readyQ));
     }
+	ENABLE();
 }
 void unlock(mutex *m) {
+	DISABLE();
     if(m->waitQ){
         enqueue(current,&readyQ);
         dispatch(dequeue(&(m->waitQ)));
     }else{
         m->locked = 0; 
     }
+	ENABLE();
 
 }
